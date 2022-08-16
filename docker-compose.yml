@@ -1,0 +1,21 @@
+version: "2.4"
+
+services:
+ accounting_service_postgres:
+  container_name: accounting_service_postgres_database
+  image: postgres
+  ports:
+   - 5555:5432
+     #  volumes:
+     #   - ./postgres-data/:/var/lib/postgresql/data
+  restart: unless-stopped
+  environment:
+   POSTGRES_USER: postgres
+   POSTGRES_PASSWORD: password
+   POSTGRES_DB: postgres
+ adminer:
+  container_name: postgres_adminer
+  image: adminer
+  restart: always
+  ports:
+   - 8086:8080
