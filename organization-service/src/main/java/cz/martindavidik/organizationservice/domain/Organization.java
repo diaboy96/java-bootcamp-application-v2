@@ -18,4 +18,37 @@ public class Organization {
 
     @Size(min = 8, max = 8)
     private int identificationNumber; // IČO
+
+    public Organization() {
+    }
+
+    public Organization(int id, String name, int identificationNumber) {
+        this.id = id;
+        this.name = name;
+        this.identificationNumber = identificationNumber;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getIdentificationNumber() {
+        return identificationNumber;
+    }
+
+    public void setIdentificationNumber(int identificationNumber) {
+        this.identificationNumber = identificationNumber;
+    }
 }
