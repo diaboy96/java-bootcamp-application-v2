@@ -5,7 +5,7 @@ services:
         container_name: accounting_service_postgres_database
         image: postgres
         ports:
-            - "5555:5432"
+            - "5432:5432"
 #       volumes:
 #           - ./postgres-data/accounting-service/:/var/lib/postgresql/data
         restart: unless-stopped
@@ -27,7 +27,7 @@ services:
         container_name: organization_service_postgres_database
         image: postgres
         ports:
-            - "4444:5432"
+            - "5555:5432"
 #       volumes:
 #           - ./postgres-data/organization-service/:/var/lib/postgresql/data
         restart: unless-stopped
@@ -35,6 +35,16 @@ services:
             POSTGRES_USER: postgres
             POSTGRES_PASSWORD: password
             POSTGRES_DB: postgres
+    organization_service:
+        build:
+            context: organization-service
+            dockerfile: Dockerfile
+        image: java-bootcamp-application-v2-organization-service
+        container_name: organization_service
+        ports:
+            - "8080:8080"
+        depends_on:
+            - organization_service_postgres
     adminer:
         container_name: postgres_adminer
         image: adminer
