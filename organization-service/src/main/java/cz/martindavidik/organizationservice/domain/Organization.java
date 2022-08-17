@@ -1,5 +1,8 @@
 package cz.martindavidik.organizationservice.domain;
 
+import org.hibernate.validator.constraints.Range;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,14 +19,14 @@ public class Organization {
     @Size(min = 2, max = 100)
     private String name;
 
-    @Size(min = 8, max = 8)
+    @Range(min = 10000, max = 99999999)
+    @Column(unique = true)
     private int identificationNumber; // IČO
 
     public Organization() {
     }
 
-    public Organization(int id, String name, int identificationNumber) {
-        this.id = id;
+    public Organization(String name, int identificationNumber) {
         this.name = name;
         this.identificationNumber = identificationNumber;
     }
