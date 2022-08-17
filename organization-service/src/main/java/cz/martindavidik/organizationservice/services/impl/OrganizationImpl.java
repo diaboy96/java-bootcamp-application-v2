@@ -5,6 +5,9 @@ import cz.martindavidik.organizationservice.repositories.OrganizationRepository;
 import cz.martindavidik.organizationservice.services.OrganizationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class OrganizationImpl implements OrganizationService {
@@ -13,21 +16,25 @@ public class OrganizationImpl implements OrganizationService {
     private OrganizationRepository organizationRepository;
 
     @Override
-    public Organization findByName(String name) {
+    @Transactional
+    public List<Organization> findByName(String name) {
         return organizationRepository.findByName(name);
     }
 
     @Override
-    public Organization findByIdentificationNumber(int identificationNumber) {
+    @Transactional
+    public List<Organization> findByIdentificationNumber(int identificationNumber) {
         return organizationRepository.findByIdentificationNumber(identificationNumber);
     }
 
     @Override
+    @Transactional
     public Organization save(Organization organization) {
         return organizationRepository.save(organization);
     }
 
     @Override
+    @Transactional
     public void delete(Organization organization) {
         organizationRepository.delete(organization);
     }

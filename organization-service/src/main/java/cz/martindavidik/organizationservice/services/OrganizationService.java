@@ -2,11 +2,13 @@ package cz.martindavidik.organizationservice.services;
 
 import cz.martindavidik.organizationservice.domain.Organization;
 
+import java.util.List;
+
 public interface OrganizationService {
 
-    Organization findByName(String name);
+    List<Organization> findByName(String name);
 
-    Organization findByIdentificationNumber(int identificationNumber);
+    List<Organization> findByIdentificationNumber(int identificationNumber);
 
     Organization save(Organization organization);
 

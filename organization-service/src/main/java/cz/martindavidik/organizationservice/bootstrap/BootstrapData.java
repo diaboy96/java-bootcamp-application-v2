@@ -19,12 +19,14 @@ public class BootstrapData implements CommandLineRunner {
         Organization cortex = new Organization("CORTEX, a.s.", 47125616);
         Organization toxin = new Organization("TOXIN s.r.o.", 2225166);
         Organization lundegaard = new Organization("Lundegaard a.s.", 25687221);
+        Organization lundegaarden = new Organization("Lundegaarden a.s.", 6636292);
         Organization johanssen = new Organization("Johanssen s.r.o.", 25666380);
         Organization inspirio = new Organization("Inspirio s.r.o.", 28399439);
 
         organizationRepository.save(cortex);
         organizationRepository.save(toxin);
         organizationRepository.save(lundegaard);
+        organizationRepository.save(lundegaarden);
         organizationRepository.save(johanssen);
         organizationRepository.save(inspirio);
 

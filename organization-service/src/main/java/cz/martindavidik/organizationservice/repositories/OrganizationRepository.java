@@ -1,11 +1,15 @@
 package cz.martindavidik.organizationservice.repositories;
 
 import cz.martindavidik.organizationservice.domain.Organization;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+
+import java.util.List;
 
 public interface OrganizationRepository extends CrudRepository<Organization, Integer> {
 
-    Organization findByIdentificationNumber(int identificationNumber);
+    @Query(value = "SELECT * from organization WHERE organization.name ILIKE %:name%", nativeQuery = true)
+    List<Organization> findByName(String name);
 
-    Organization findByName(String name);
+    List<Organization> findByIdentificationNumber(int identificationNumber);
 }
