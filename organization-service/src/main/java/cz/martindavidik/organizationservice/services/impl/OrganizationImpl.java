@@ -17,6 +17,12 @@ public class OrganizationImpl implements OrganizationService {
 
     @Override
     @Transactional
+    public List<Organization> getAllOrganizations() {
+        return organizationRepository.getAllOrganizations();
+    }
+
+    @Override
+    @Transactional
     public List<Organization> findByName(String name) {
         return organizationRepository.findByName(name);
     }

@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface OrganizationService {
 
+    List<Organization> getAllOrganizations();
+
     List<Organization> findByName(String name);
 
     List<Organization> findByIdentificationNumber(int identificationNumber);

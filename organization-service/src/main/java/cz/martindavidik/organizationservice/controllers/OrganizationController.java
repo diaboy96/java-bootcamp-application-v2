@@ -25,6 +25,16 @@ public class OrganizationController {
     }
 
     /**
+     * Return all organizations
+     *
+     * @return List<Organization>
+     */
+    @GetMapping("/getAllOrganizations")
+    public List<Organization> getAllOrganizations() {
+        return organizationService.getAllOrganizations();
+    }
+
+    /**
      * Return list of organizations by its name or identification number
      *
      * @param organization - organization name or identification number

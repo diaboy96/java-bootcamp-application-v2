@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface OrganizationRepository extends CrudRepository<Organization, Integer> {
 
+    List<Organization> getAllOrganizations();
+
     @Query(value = "SELECT * from organization WHERE organization.name ILIKE %:name%", nativeQuery = true)
     List<Organization> findByName(String name);
 
