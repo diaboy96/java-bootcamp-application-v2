@@ -2,10 +2,15 @@ package cz.martindavidik.organizationservice.controllers;
 
 import cz.martindavidik.organizationservice.domain.Organization;
 import cz.martindavidik.organizationservice.services.OrganizationService;
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -19,6 +24,12 @@ public class OrganizationController {
         this.organizationService = organizationService;
     }
 
+    /**
+     * Return list of organizations by its name or identification number
+     *
+     * @param organization - organization name or identification number
+     * @return List<Organization>
+     */
     @GetMapping("/listOrganizations/{organization}")
     public List<Organization> listOrganizations(@PathVariable String organization) {
         try {
@@ -32,8 +43,32 @@ public class OrganizationController {
         }
     }
 
+    /**
+     * Return organization by its identification number
+     *
+     * @param identificationNumber - organization identification number
+     * @return List<Organization>
+     */
     @GetMapping("/getOrganization/{identificationNumber}")
     public List<Organization> getOrganization(@PathVariable int identificationNumber) {
         return organizationService.findByIdentificationNumber(identificationNumber);
+    }
+
+    /**
+     * Create new organization
+     *
+     * @param name - organization name
+     * @param identificationNumber - organization identification number
+     * @return Organization
+     */
+    @PostMapping("/createOrganization")
+    public Organization createOrganization(@RequestParam String name, @RequestParam int identificationNumber) {
+        try {
+            Organization organization = new Organization(name, identificationNumber);
+
+            return organizationService.save(organization);
+        } catch (ConstraintViolationException | javax.validation.ConstraintViolationException e) {
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
     }
 }
