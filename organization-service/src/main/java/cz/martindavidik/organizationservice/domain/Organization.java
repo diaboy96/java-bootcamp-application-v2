@@ -31,6 +31,12 @@ public class Organization {
         this.identificationNumber = identificationNumber;
     }
 
+    public Organization(int id, String name, int identificationNumber) {
+        this.id = id;
+        this.name = name;
+        this.identificationNumber = identificationNumber;
+    }
+
     public int getId() {
         return id;
     }

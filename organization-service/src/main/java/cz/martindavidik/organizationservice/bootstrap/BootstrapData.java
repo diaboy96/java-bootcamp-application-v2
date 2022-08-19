@@ -16,12 +16,12 @@ public class BootstrapData implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Organization cortex = new Organization("CORTEX, a.s.", 47125616);
-        Organization toxin = new Organization("TOXIN s.r.o.", 2225166);
-        Organization lundegaard = new Organization("Lundegaard a.s.", 25687221);
-        Organization lundegaarden = new Organization("Lundegaarden a.s.", 6636292);
-        Organization johanssen = new Organization("Johanssen s.r.o.", 25666380);
-        Organization inspirio = new Organization("Inspirio s.r.o.", 28399439);
+        Organization cortex = new Organization(1, "CORTEX, a.s.", 47125616);
+        Organization toxin = new Organization(2, "TOXIN s.r.o.", 2225166);
+        Organization lundegaard = new Organization(3, "Lundegaard a.s.", 25687221);
+        Organization lundegaarden = new Organization(4, "Lundegaarden a.s.", 6636292);
+        Organization johanssen = new Organization(5, "Johanssen s.r.o.", 25666380);
+        Organization inspirio = new Organization(6, "Inspirio s.r.o.", 28399439);
 
         organizationRepository.save(cortex);
         organizationRepository.save(toxin);

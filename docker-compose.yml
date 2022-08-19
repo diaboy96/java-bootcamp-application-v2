@@ -6,8 +6,8 @@ services:
         image: postgres
         ports:
             - "5432:5432"
-#       volumes:
-#           - ./postgres-data/accounting-service/:/var/lib/postgresql/data
+#        volumes:
+#            - ./postgres-data/accounting-service/data/:/var/lib/postgresql/data
         restart: unless-stopped
         environment:
             POSTGRES_USER: postgres
@@ -28,8 +28,8 @@ services:
         image: postgres
         ports:
             - "5555:5432"
-#       volumes:
-#           - ./postgres-data/organization-service/:/var/lib/postgresql/data
+#        volumes:
+#            - ./postgres-data/organization-service/data/:/var/lib/postgresql/data
         restart: unless-stopped
         environment:
             POSTGRES_USER: postgres
