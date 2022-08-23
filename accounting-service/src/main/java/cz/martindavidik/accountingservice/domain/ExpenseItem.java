@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class ExpenseItem {
@@ -22,6 +24,10 @@ public class ExpenseItem {
     private int numberOfPieces;
 
     private double pricePerPiece;
+
+    @ManyToOne
+    @JoinColumn(name = "expense_id", nullable = false)
+    private Expense expense;
 
     public ExpenseItem() {
     }

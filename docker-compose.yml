@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-    accounting_service_postgres:
+    accounting-service-postgres:
         container_name: accounting_service_postgres_database
         image: postgres
         ports:
@@ -13,7 +13,7 @@ services:
             POSTGRES_USER: postgres
             POSTGRES_PASSWORD: password
             POSTGRES_DB: postgres
-    accounting_service:
+    accounting-service:
         build:
             context: accounting-service
             dockerfile: Dockerfile
@@ -22,8 +22,8 @@ services:
         ports:
             - "8081:8081"
         depends_on:
-            - accounting_service_postgres
-    organization_service_postgres:
+            - accounting-service-postgres
+    organization-service-postgres:
         container_name: organization_service_postgres_database
         image: postgres
         ports:
@@ -35,7 +35,7 @@ services:
             POSTGRES_USER: postgres
             POSTGRES_PASSWORD: password
             POSTGRES_DB: postgres
-    organization_service:
+    organization-service:
         build:
             context: organization-service
             dockerfile: Dockerfile
@@ -44,7 +44,7 @@ services:
         ports:
             - "8080:8080"
         depends_on:
-            - organization_service_postgres
+            - organization-service-postgres
     adminer:
         container_name: postgres_adminer
         image: adminer
