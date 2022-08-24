@@ -32,19 +32,12 @@ public class ExpenseItem {
     public ExpenseItem() {
     }
 
-    public ExpenseItem(int code, String description, int numberOfPieces, double pricePerPiece) {
+    public ExpenseItem(int code, String description, int numberOfPieces, double pricePerPiece, Expense expense) {
         this.code = code;
         this.description = description;
         this.numberOfPieces = numberOfPieces;
         this.pricePerPiece = pricePerPiece;
-    }
-
-    public ExpenseItem(int id, int code, String description, int numberOfPieces, double pricePerPiece) {
-        this.id = id;
-        this.code = code;
-        this.description = description;
-        this.numberOfPieces = numberOfPieces;
-        this.pricePerPiece = pricePerPiece;
+        this.expense = expense;
     }
 
     public int getId() {

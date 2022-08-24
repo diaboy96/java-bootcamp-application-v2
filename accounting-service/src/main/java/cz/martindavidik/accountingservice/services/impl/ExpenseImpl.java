@@ -7,11 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 public class ExpenseImpl implements ExpenseService {
 
     @Autowired
     private ExpenseRepository expenseRepository;
+
+    @Override
+    @Transactional
+    public Optional<Expense> findExpenseByExpenseNumber(String expenseNumber) {
+        return expenseRepository.findExpenseByExpenseNumber(expenseNumber);
+    }
 
     @Override
     @Transactional

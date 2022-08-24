@@ -26,4 +26,53 @@ public class Expense {
     private String PDFinvoiceBase64Encoded;
 
     private boolean paid = false;
+
+    public Expense() {
+    }
+
+    public Expense(String expenseNumber, int supplier, Date date) {
+        this.expenseNumber = expenseNumber;
+        this.supplier = supplier;
+        this.date = date;
+    }
+
+    public String getExpenseNumber() {
+        return expenseNumber;
+    }
+
+    public void setExpenseNumber(String expenseNumber) {
+        this.expenseNumber = expenseNumber;
+    }
+
+    public int getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(int supplier) {
+        this.supplier = supplier;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getPDFinvoiceBase64Encoded() {
+        return PDFinvoiceBase64Encoded;
+    }
+
+    public void setPDFinvoiceBase64Encoded(String PDFinvoiceBase64Encoded) {
+        this.PDFinvoiceBase64Encoded = PDFinvoiceBase64Encoded;
+    }
+
+    public boolean isPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
+    }
 }
