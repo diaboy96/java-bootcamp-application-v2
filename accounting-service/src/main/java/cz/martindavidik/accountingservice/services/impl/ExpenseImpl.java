@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,6 +21,12 @@ public class ExpenseImpl implements ExpenseService {
     @Transactional
     public Optional<Expense> findExpenseByExpenseNumber(String expenseNumber) {
         return expenseRepository.findExpenseByExpenseNumber(expenseNumber);
+    }
+
+    @Override
+    @Transactional
+    public List<Expense> findByDateBetween(Date from, Date to) {
+        return expenseRepository.findByDateBetween(from, to);
     }
 
     @Override

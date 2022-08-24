@@ -99,4 +99,20 @@ public class ExpenseController {
     public List<ExpenseItem> getExpenseItemsByExpenseNumber(@PathVariable String expenseNumber) {
         return expenseItemService.findByExpenseNumber(expenseNumber);
     }
+
+    /**
+     * Provides Expenses between specified dates
+     *
+     * @param from - from which date should be searched
+     * @param to - to which date should be searched
+     *
+     * @return List<Expense>
+     */
+    @GetMapping("/listExpenses")
+    public List<Expense> listExpenses(
+            @RequestParam @DateTimeFormat(pattern = "dd/MM/yyyy") Date from,
+            @RequestParam @DateTimeFormat(pattern = "dd/MM/yyyy") Date to
+    ) {
+        return expenseService.findByDateBetween(from, to);
+    }
 }
