@@ -31,6 +31,21 @@ public class ExpenseImpl implements ExpenseService {
 
     @Override
     @Transactional
+    public Expense attachExpenseDocument(String expenseNumber, String base64encodedPDFInvoice) {
+        Optional<Expense> expense = this.findExpenseByExpenseNumber(expenseNumber);
+
+        if (expense.isPresent()) {
+            Expense expense1 = expense.get();
+            expense1.setPDFinvoiceBase64Encoded(base64encodedPDFInvoice);
+
+            return this.save(expense1);
+        }
+
+        return null;
+    }
+
+    @Override
+    @Transactional
     public Expense save(Expense expense) {
         return expenseRepository.save(expense);
     }

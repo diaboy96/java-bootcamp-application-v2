@@ -12,6 +12,8 @@ public interface ExpenseService {
 
     List<Expense> findByDateBetween(Date from, Date to);
 
+    Expense attachExpenseDocument(String expenseNumber, String base64encodedPDFInvoice);
+
     Expense save(Expense expense);
 
     void delete(Expense expense);

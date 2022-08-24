@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -114,5 +115,18 @@ public class ExpenseController {
             @RequestParam @DateTimeFormat(pattern = "dd/MM/yyyy") Date to
     ) {
         return expenseService.findByDateBetween(from, to);
+    }
+
+    /**
+     * Attach base64 encoded PDF invoice to Expense
+     *
+     * @param expenseNumber - Expense´s Primary key
+     * @param expenseDocument - base 64 encoded PDF invoice
+     *
+     * @return Expense
+     */
+    @PutMapping("/uploadExpenseDocument")
+    public Expense uploadExpenseDocument(@RequestParam String expenseNumber, @RequestParam String expenseDocument) {
+        return expenseService.attachExpenseDocument(expenseNumber, expenseDocument);
     }
 }
