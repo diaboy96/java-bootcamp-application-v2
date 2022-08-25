@@ -8,6 +8,7 @@ import cz.martindavidik.accountingservice.services.ExpenseService;
 import cz.martindavidik.accountingservice.services.OrganizationService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -152,5 +153,26 @@ public class ExpenseController {
     @GetMapping("/getTotalExpenseAmountByExpenseNumber/{expenseNumber}")
     public double getTotalExpenseAmountByExpenseNumber(@PathVariable String expenseNumber) {
         return expenseService.getTotalExpenseAmountByExpenseNumber(expenseNumber);
+    }
+
+    /**
+     * Removes Expense with all it´s dependencies (expense items, PDF invoice)
+     *
+     * @param expenseNumber - Expense´s Primary key
+     *
+     * @return Expense
+     */
+    @DeleteMapping("/deleteExpense/{expenseNumber}")
+    public Expense deleteExpense(@PathVariable String expenseNumber) {
+        Optional<Expense> expense = expenseService.findExpenseByExpenseNumber(expenseNumber);
+
+        if (expense.isPresent()) {
+            Expense expense1 = expense.get();
+            expenseService.delete(expense1);
+
+            return expense1;
+        }
+
+        return null;
     }
 }

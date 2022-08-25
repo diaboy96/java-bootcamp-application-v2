@@ -9,4 +9,6 @@ import java.util.List;
 public interface ExpenseItemRepository extends CrudRepository<ExpenseItem, Integer> {
 
     List<ExpenseItem> findByExpense(Expense expense);
+
+    void deleteExpenseItemsByExpense(Expense expense);
 }

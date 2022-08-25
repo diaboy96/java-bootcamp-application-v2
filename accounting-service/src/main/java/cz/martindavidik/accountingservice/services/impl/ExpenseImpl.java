@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Base64;
 import java.util.Calendar;
@@ -102,6 +103,35 @@ public class ExpenseImpl implements ExpenseService {
     }
 
     /**
+     * Removes PDF invoice from file system + set path in Expense to null
+     *
+     * @param expense - Expense
+     *
+     * @return Expense
+     */
+    @Override
+    @Transactional
+    public Expense removeExpenseDocument(Expense expense) {
+        String filePath = expense.getPDFinvoicePath();
+
+        if (filePath != null) {
+            File file = new File(filePath);
+
+            try {
+                if (Files.deleteIfExists(file.toPath())) {
+                    expense.setPDFinvoicePath(null);
+
+                    return this.save(expense);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Obtains base64 encoded PDF invoice
      *
      * @param expenseNumber - Expense´s Primary key
@@ -176,13 +206,20 @@ public class ExpenseImpl implements ExpenseService {
     }
 
     /**
-     * Removes Expense
+     * Removes Expense with all it´s dependencies
      *
      * @param expense - Expense
      */
     @Override
     @Transactional
     public void delete(Expense expense) {
+        // remove all expenseItems (bound to Expense)
+        expenseItemService.deleteExpenseItemsByExpense(expense);
+
+        // remove PDF invoice (bound to Expense)
+        this.removeExpenseDocument(expense);
+
+        // remove Expense
         expenseRepository.delete(expense);
     }
 }

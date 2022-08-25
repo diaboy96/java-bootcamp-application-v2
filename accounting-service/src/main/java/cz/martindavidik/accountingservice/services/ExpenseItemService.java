@@ -13,5 +13,7 @@ public interface ExpenseItemService {
 
     ExpenseItem save(ExpenseItem expenseItem);
 
+    void deleteExpenseItemsByExpense(Expense expense);
+
     void delete(ExpenseItem expenseItem);
 }

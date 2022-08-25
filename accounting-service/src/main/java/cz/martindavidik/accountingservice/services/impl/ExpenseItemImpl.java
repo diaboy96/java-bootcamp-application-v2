@@ -43,6 +43,12 @@ public class ExpenseItemImpl implements ExpenseItemService {
 
     @Override
     @Transactional
+    public void deleteExpenseItemsByExpense(Expense expense) {
+        expenseItemRepository.deleteExpenseItemsByExpense(expense);
+    }
+
+    @Override
+    @Transactional
     public void delete(ExpenseItem expenseItem) {
         expenseItemRepository.delete(expenseItem);
     }

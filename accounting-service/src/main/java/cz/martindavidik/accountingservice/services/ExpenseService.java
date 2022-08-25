@@ -14,6 +14,8 @@ public interface ExpenseService {
 
     Expense attachExpenseDocument(String expenseNumber, String base64encodedPDFInvoice);
 
+    Expense removeExpenseDocument(Expense expense);
+
     String getExpenseDocument(String expenseNumber);
 
     double getTotalExpenseAmountByExpenseNumber(String expenseNumber);
