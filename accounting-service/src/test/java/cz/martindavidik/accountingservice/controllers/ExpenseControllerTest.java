@@ -92,7 +92,7 @@ public class ExpenseControllerTest {
         // correct request (existing organization + business day)
         this.mockMvc
                 .perform(MockMvcRequestBuilders
-                        .post("/api/createExpense")
+                        .put("/api/createExpense")
                         .param("supplierIdentificationNumber", String.valueOf(existingOrganization))
                         .param("expenseNumber", expenseNumber)
                         .param("paymentDate", businessDayString)
@@ -104,7 +104,7 @@ public class ExpenseControllerTest {
         // incorrect request (existing organization + weekend day)
         this.mockMvc
                 .perform(MockMvcRequestBuilders
-                        .post("/api/createExpense")
+                        .put("/api/createExpense")
                         .param("supplierIdentificationNumber", String.valueOf(existingOrganization))
                         .param("expenseNumber", expenseNumber)
                         .param("paymentDate", weekendDayString)
@@ -116,7 +116,7 @@ public class ExpenseControllerTest {
         // incorrect request (existing organization + public holiday day)
         this.mockMvc
                 .perform(MockMvcRequestBuilders
-                        .post("/api/createExpense")
+                        .put("/api/createExpense")
                         .param("supplierIdentificationNumber", String.valueOf(existingOrganization))
                         .param("expenseNumber", expenseNumber)
                         .param("paymentDate", publicHolidayString)
@@ -128,7 +128,7 @@ public class ExpenseControllerTest {
         // incorrect request (non-existent organization + business day)
         this.mockMvc
                 .perform(MockMvcRequestBuilders
-                        .post("/api/createExpense")
+                        .put("/api/createExpense")
                         .param("supplierIdentificationNumber", String.valueOf(nonexistentOrganization))
                         .param("expenseNumber", expenseNumber)
                         .param("paymentDate", businessDayString)
@@ -200,7 +200,6 @@ public class ExpenseControllerTest {
     public void testUploadExpenseDocument() throws Exception {
         // data mock
 
-
         // perform correct request
         this.mockMvc
                 .perform(MockMvcRequestBuilders
@@ -211,5 +210,19 @@ public class ExpenseControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
         // todo: dodělat tento test
+    }
+
+    @Test
+    public void testGetTotalExpenseAmountByExpenseNumber() throws Exception {
+        // data mock
+        Mockito.when(expenseService.getTotalExpenseAmountByExpenseNumber(expenseNumber))
+                .thenReturn(20745.9);
+
+        this.mockMvc
+                .perform(MockMvcRequestBuilders
+                        .get("/api/getTotalExpenseAmountByExpenseNumber/" + expenseNumber)
+                )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$").value(20745.9));
     }
 }

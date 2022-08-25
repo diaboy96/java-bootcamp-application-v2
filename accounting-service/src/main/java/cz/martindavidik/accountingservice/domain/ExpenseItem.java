@@ -2,9 +2,8 @@ package cz.martindavidik.accountingservice.domain;
 
 import org.hibernate.validator.constraints.Range;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -13,9 +12,7 @@ import javax.persistence.ManyToOne;
 public class ExpenseItem {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
+    @Column(unique = true)
     private int code;
 
     private String description;
@@ -45,14 +42,6 @@ public class ExpenseItem {
         this.numberOfPieces = numberOfPieces;
         this.pricePerPiece = pricePerPiece;
         this.expense = expense;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getCode() {

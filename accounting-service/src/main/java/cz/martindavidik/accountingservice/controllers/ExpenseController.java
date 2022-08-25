@@ -10,7 +10,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,7 +52,7 @@ public class ExpenseController {
      *
      * @return Expense
      */
-    @PostMapping("/createExpense")
+    @PutMapping("/createExpense")
     public Optional<Expense> createExpense(
             @RequestParam int supplierIdentificationNumber,
             @RequestParam String expenseNumber,
@@ -86,6 +85,7 @@ public class ExpenseController {
             expenseItemService.save(expenseItem1);
         });
 
+        // return saved Expense
         return expenseService.findExpenseByExpenseNumber(expenseNumber);
     }
 
@@ -128,5 +128,17 @@ public class ExpenseController {
     @PutMapping("/uploadExpenseDocument")
     public Expense uploadExpenseDocument(@RequestParam String expenseNumber, @RequestParam String expenseDocument) {
         return expenseService.attachExpenseDocument(expenseNumber, expenseDocument);
+    }
+
+    /**
+     * Return the total expenses for all expense items
+     *
+     * @param expenseNumber - Expense´s Primary key
+     *
+     * @return double
+     */
+    @GetMapping("/getTotalExpenseAmountByExpenseNumber/{expenseNumber}")
+    public double getTotalExpenseAmountByExpenseNumber(@PathVariable String expenseNumber) {
+        return expenseService.getTotalExpenseAmountByExpenseNumber(expenseNumber);
     }
 }
