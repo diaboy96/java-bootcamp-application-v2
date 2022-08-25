@@ -48,12 +48,13 @@ public class ExpenseControllerTest {
 
     public static final MediaType APPLICATION_JSON_UTF8 = new MediaType(MediaType.APPLICATION_JSON.getType(), MediaType.APPLICATION_JSON.getSubtype(), StandardCharsets.UTF_8);
 
-    private final ExpenseItem expenseItem1 = new ExpenseItem(224, "Popis položky č.1", 7, 14.90);
-    private final ExpenseItem expenseItem2 = new ExpenseItem(1027, "Popis položky č.2", 42, 769);
     private final int existingOrganization = 6636292; // organization´s identification number
     private final String businessDayString = "12/7/2022";
     private final Date businessDay = new SimpleDateFormat("dd/MM/yyyy").parse(businessDayString);
     private final String expenseNumber = "CZ20220001";
+    private final String responseDate = "2022-07-11T22:00:00.000+00:00";
+    private final ExpenseItem expenseItem1 = new ExpenseItem(224, "Popis položky č.1", 7, 14.90);
+    private final ExpenseItem expenseItem2 = new ExpenseItem(1027, "Popis položky č.2", 42, 769);
 
     public ExpenseControllerTest() throws ParseException {
     }
@@ -188,7 +189,7 @@ public class ExpenseControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].expenseNumber").value(expenseNumber))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].supplier").value(existingOrganization))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].date").value("2022-07-11T22:00:00.000+00:00"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].date").value(responseDate));
 
         // perform incorrect request (without parameters)
         this.mockMvc
@@ -198,18 +199,44 @@ public class ExpenseControllerTest {
 
     @Test
     public void testUploadExpenseDocument() throws Exception {
+        String base64encodedFile = "JVBERi0xLjUKJYCBgoMKMSAwIG9iago8PC9GaWx0ZXIvRmxhdGVEZWNvZGUvRmlyc3QgMTQxL04gMjAvTGVuZ3==";
+        String pdfInvoicePath = "./invoices/1661436227729.pdf";
+
         // data mock
+        Mockito.when(expenseService.attachExpenseDocument(expenseNumber, base64encodedFile))
+                .thenReturn(new Expense(expenseNumber, existingOrganization, businessDay, pdfInvoicePath, false));
 
         // perform correct request
         this.mockMvc
                 .perform(MockMvcRequestBuilders
                         .put("/api/uploadExpenseDocument")
                         .param("expenseNumber", expenseNumber)
-                        //.param("expenseDocument", ) todo: uložit expenseDocument (base 64 encoded do projektu jako soubor) a načítat z něj hodnotu - protože je to dlouhý jako prase
+                        .content(base64encodedFile)
                 )
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(5))
+                .andExpect(MockMvcResultMatchers.jsonPath("expenseNumber").value(expenseNumber))
+                .andExpect(MockMvcResultMatchers.jsonPath("supplier").value(existingOrganization))
+                .andExpect(MockMvcResultMatchers.jsonPath("date").value(responseDate))
+                .andExpect(MockMvcResultMatchers.jsonPath("paid").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("pdfinvoicePath").value(pdfInvoicePath));
+    }
 
-        // todo: dodělat tento test
+    @Test
+    public void testDownloadExpenseDocument() throws Exception {
+        String base64encodedFile = "JVBERi0xLjUKJYCBgoMKMSAwIG9iago8PC9GaWx0ZXIvRmxhdGVEZWNvZGUvRmlyc3QgMTQxL04gMjAvTGVuZ3==";
+
+        // data mock
+        Mockito.when(expenseService.getExpenseDocument(expenseNumber))
+                .thenReturn(base64encodedFile);
+
+        // perform correct request
+        this.mockMvc
+                .perform(MockMvcRequestBuilders
+                        .get("/api/downloadExpenseDocument/" + expenseNumber)
+                )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$").value(base64encodedFile));
     }
 
     @Test

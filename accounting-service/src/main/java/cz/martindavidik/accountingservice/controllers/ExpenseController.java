@@ -118,7 +118,7 @@ public class ExpenseController {
     }
 
     /**
-     * Attach base64 encoded PDF invoice to Expense
+     * Attach PDF invoice to Expense
      *
      * @param expenseNumber - Expense´s Primary key
      * @param expenseDocument - base 64 encoded PDF invoice
@@ -126,8 +126,20 @@ public class ExpenseController {
      * @return Expense
      */
     @PutMapping("/uploadExpenseDocument")
-    public Expense uploadExpenseDocument(@RequestParam String expenseNumber, @RequestParam String expenseDocument) {
+    public Expense uploadExpenseDocument(@RequestParam String expenseNumber, @RequestBody String expenseDocument) {
         return expenseService.attachExpenseDocument(expenseNumber, expenseDocument);
+    }
+
+    /**
+     * Obtains PDF invoice (base 64 encoded) attached to Expense
+     *
+     * @param expenseNumber - Expense´s Primary key
+     *
+     * @return Base64 encoded PDF invoice
+     */
+    @GetMapping("/downloadExpenseDocument/{expenseNumber}")
+    public String downloadExpenseDocument(@PathVariable String expenseNumber) {
+        return expenseService.getExpenseDocument(expenseNumber);
     }
 
     /**

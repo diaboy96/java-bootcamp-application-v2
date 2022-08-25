@@ -9,6 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.nio.file.Files;
+import java.util.Base64;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -51,6 +56,7 @@ public class ExpenseImpl implements ExpenseService {
 
     /**
      * Attach PDF invoice to Expense
+     * Decodes Base64 encoded PDF file to PDF format and saves it to FileSystem + file path to database
      *
      * @param expenseNumber - Expense´s Primary key
      * @param base64encodedPDFInvoice - PDF Invoice (base64 encoded)
@@ -64,9 +70,66 @@ public class ExpenseImpl implements ExpenseService {
 
         if (expense.isPresent()) {
             Expense expense1 = expense.get();
-            expense1.setPDFinvoiceBase64Encoded(base64encodedPDFInvoice);
+            if (expense1.getPDFinvoicePath() != null) {
+                // invoice has been already saved
+                return null;
+            }
 
-            return this.save(expense1);
+            // check if directory exist (otherwise create it)
+            File directory = new File("./invoices");
+            if (!directory.exists()) {
+                directory.mkdir();
+            }
+
+            String path = "./invoices/" + Calendar.getInstance().getTimeInMillis() + ".pdf";
+            File file = new File(path);
+
+            try (FileOutputStream fos = new FileOutputStream(file)) {
+                // decode base64 to PDF and save to file system
+                byte[] decoder = Base64.getDecoder().decode(base64encodedPDFInvoice);
+                fos.write(decoder);
+
+                // set PDF invoice path to Expense
+                expense1.setPDFinvoicePath(path);
+
+                return this.save(expense1);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Obtains base64 encoded PDF invoice
+     *
+     * @param expenseNumber - Expense´s Primary key
+     *
+     * @return Base64 encoded PDF invoice
+     */
+    @Override
+    @Transactional
+    public String getExpenseDocument(String expenseNumber) {
+        // obtain file path from database
+        Optional<Expense> expense = this.findExpenseByExpenseNumber(expenseNumber);
+
+        if (expense.isPresent()) {
+            Expense expense1 = expense.get();
+            if (expense1.getPDFinvoicePath() != null) {
+                String filePath = expense1.getPDFinvoicePath();
+
+                // obtain PDF from file system
+                try {
+                    File file = new File(filePath);
+                    byte[] bytes = Files.readAllBytes(file.toPath());
+
+                    // return Base64 encoded PDF invoice
+                    return Base64.getEncoder().encodeToString(bytes);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         return null;

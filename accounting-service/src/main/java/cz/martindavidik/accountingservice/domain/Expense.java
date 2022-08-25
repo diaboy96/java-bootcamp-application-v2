@@ -23,7 +23,7 @@ public class Expense {
     @OneToMany(mappedBy = "expense")
     private Set<ExpenseItem> expenseItems = new HashSet<>();
 
-    private String PDFinvoiceBase64Encoded;
+    private String PDFinvoicePath = null;
 
     private boolean paid = false;
 
@@ -34,6 +34,14 @@ public class Expense {
         this.expenseNumber = expenseNumber;
         this.supplier = supplier;
         this.date = date;
+    }
+
+    public Expense(String expenseNumber, int supplier, Date date, String PDFinvoicePath, boolean paid) {
+        this.expenseNumber = expenseNumber;
+        this.supplier = supplier;
+        this.date = date;
+        this.PDFinvoicePath = PDFinvoicePath;
+        this.paid = paid;
     }
 
     public String getExpenseNumber() {
@@ -60,12 +68,12 @@ public class Expense {
         this.date = date;
     }
 
-    public String getPDFinvoiceBase64Encoded() {
-        return PDFinvoiceBase64Encoded;
+    public String getPDFinvoicePath() {
+        return PDFinvoicePath;
     }
 
-    public void setPDFinvoiceBase64Encoded(String PDFinvoiceBase64Encoded) {
-        this.PDFinvoiceBase64Encoded = PDFinvoiceBase64Encoded;
+    public void setPDFinvoicePath(String PDFinvoicePath) {
+        this.PDFinvoicePath = PDFinvoicePath;
     }
 
     public boolean isPaid() {
