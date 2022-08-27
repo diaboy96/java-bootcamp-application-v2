@@ -21,6 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api")
@@ -45,6 +46,7 @@ public class ExpenseController {
 
     /**
      * Saves Expense with expense items (bound to Expense)
+     * expenseItems must be created before calling this method (create expenseItem can be done by calling ExpenseItemController.createExpenseItem)
      *
      * @param supplierIdentificationNumber - IČO
      * @param expenseNumber - Expense´s Primary key
@@ -54,7 +56,7 @@ public class ExpenseController {
      * @return Expense
      */
     @PutMapping("/createExpense")
-    public Optional<Expense> createExpense(
+    public boolean createExpense(
             @RequestParam int supplierIdentificationNumber,
             @RequestParam String expenseNumber,
             @RequestParam @DateTimeFormat(pattern = "dd/MM/yyyy") Date paymentDate,
@@ -75,19 +77,7 @@ public class ExpenseController {
         }
 
         // save Expense
-        Expense expense = new Expense(expenseNumber, supplierIdentificationNumber, paymentDate);
-        expenseService.save(expense);
-
-        // save Expense items bound to Expense
-        expenseItems.forEach(expenseItem -> {
-            ExpenseItem expenseItem1 = new ExpenseItem(expenseItem.getCode(), expenseItem.getDescription(),
-                    expenseItem.getNumberOfPieces(), expenseItem.getPricePerPiece(), expense);
-
-            expenseItemService.save(expenseItem1);
-        });
-
-        // return saved Expense
-        return expenseService.findExpenseByExpenseNumber(expenseNumber);
+        return expenseService.saveExpenseWithExpenseItems(expenseNumber, supplierIdentificationNumber, paymentDate, expenseItems);
     }
 
     /**
@@ -98,7 +88,7 @@ public class ExpenseController {
      * @return List<ExpenseItem>
      */
     @GetMapping("/getExpenseItemsByExpenseNumber/{expenseNumber}")
-    public List<ExpenseItem> getExpenseItemsByExpenseNumber(@PathVariable String expenseNumber) {
+    public Set<ExpenseItem> getExpenseItemsByExpenseNumber(@PathVariable String expenseNumber) {
         return expenseItemService.findByExpenseNumber(expenseNumber);
     }
 
@@ -144,6 +134,20 @@ public class ExpenseController {
     }
 
     /**
+     * Remove PDF invoice from file system + path to file from database
+     *
+     * @param expenseNumber - Expense´s Primary key
+     *
+     * @return Expense
+     */
+    @DeleteMapping("/removeExpenseDocument/{expenseNumber}")
+    public Expense removeExpenseDocument(@PathVariable String expenseNumber) {
+        Optional<Expense> expense = expenseService.findExpenseByExpenseNumber(expenseNumber);
+
+        return expense.map(expenseService::removeExpenseDocument).orElse(null);
+    }
+
+    /**
      * Return the total expenses for all expense items
      *
      * @param expenseNumber - Expense´s Primary key
@@ -156,7 +160,7 @@ public class ExpenseController {
     }
 
     /**
-     * Removes Expense with all it´s dependencies (expense items, PDF invoice)
+     * Removes Expense with PDF invoice bound to it
      *
      * @param expenseNumber - Expense´s Primary key
      *

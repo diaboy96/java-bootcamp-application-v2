@@ -1,19 +1,19 @@
 package cz.martindavidik.accountingservice.services;
 
-import cz.martindavidik.accountingservice.domain.Expense;
 import cz.martindavidik.accountingservice.domain.ExpenseItem;
 
-import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 public interface ExpenseItemService {
 
-    List<ExpenseItem> findByExpense(Expense expense);
+    Optional<ExpenseItem> findById(int code);
 
-    List<ExpenseItem> findByExpenseNumber(String expenseNumber);
+    Iterable<ExpenseItem> findAll();
+
+    Set<ExpenseItem> findByExpenseNumber(String expenseNumber);
 
     ExpenseItem save(ExpenseItem expenseItem);
-
-    void deleteExpenseItemsByExpense(Expense expense);
 
     void delete(ExpenseItem expenseItem);
 }

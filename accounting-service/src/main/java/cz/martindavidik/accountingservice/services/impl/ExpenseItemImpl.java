@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class ExpenseItemImpl implements ExpenseItemService {
@@ -23,28 +23,28 @@ public class ExpenseItemImpl implements ExpenseItemService {
 
     @Override
     @Transactional
-    public List<ExpenseItem> findByExpense(Expense expense) {
-        return expenseItemRepository.findByExpense(expense);
+    public Optional<ExpenseItem> findById(int code) {
+        return expenseItemRepository.findById(code);
     }
 
     @Override
     @Transactional
-    public List<ExpenseItem> findByExpenseNumber(String expenseNumber) {
+    public Iterable<ExpenseItem> findAll() {
+        return expenseItemRepository.findAll();
+    }
+
+    @Override
+    @Transactional
+    public Set<ExpenseItem> findByExpenseNumber(String expenseNumber) {
         Optional<Expense> expense = expenseRepository.findExpenseByExpenseNumber(expenseNumber);
 
-        return expense.map(this::findByExpense).orElse(null);
+        return expense.map(Expense::getExpenseItems).orElse(null);
     }
 
     @Override
     @Transactional
     public ExpenseItem save(ExpenseItem expenseItem) {
         return expenseItemRepository.save(expenseItem);
-    }
-
-    @Override
-    @Transactional
-    public void deleteExpenseItemsByExpense(Expense expense) {
-        expenseItemRepository.deleteExpenseItemsByExpense(expense);
     }
 
     @Override

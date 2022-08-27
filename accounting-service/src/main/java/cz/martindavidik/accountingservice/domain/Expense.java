@@ -1,9 +1,11 @@
 package cz.martindavidik.accountingservice.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,7 +22,8 @@ public class Expense {
 
     private Date date;
 
-    @OneToMany(mappedBy = "expense")
+    @ManyToMany(mappedBy = "expenses", targetEntity = ExpenseItem.class)
+    @JsonIgnoreProperties("expenses")
     private Set<ExpenseItem> expenseItems = new HashSet<>();
 
     private String PDFinvoicePath = null;
@@ -82,5 +85,16 @@ public class Expense {
 
     public void setPaid(boolean paid) {
         this.paid = paid;
+    }
+
+    public Set<ExpenseItem> getExpenseItems() {
+        return expenseItems;
+    }
+
+    public void removeAllExpenseItems() {
+        for (ExpenseItem expenseItem : expenseItems) {
+            expenseItem.getExpenses().remove(this);
+        }
+        expenseItems.clear();
     }
 }

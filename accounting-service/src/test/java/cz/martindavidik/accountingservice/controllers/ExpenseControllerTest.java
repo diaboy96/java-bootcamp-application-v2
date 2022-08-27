@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -144,7 +145,7 @@ public class ExpenseControllerTest {
         // data mock
         Mockito.when(expenseItemService.findByExpenseNumber(expenseNumber))
                 .thenReturn(
-                        List.of(
+                        Set.of(
                                 expenseItem1,
                                 expenseItem2
                         )
@@ -214,7 +215,7 @@ public class ExpenseControllerTest {
                         .content(base64encodedFile)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(5))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(6))
                 .andExpect(MockMvcResultMatchers.jsonPath("expenseNumber").value(expenseNumber))
                 .andExpect(MockMvcResultMatchers.jsonPath("supplier").value(existingOrganization))
                 .andExpect(MockMvcResultMatchers.jsonPath("date").value(responseDate))

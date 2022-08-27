@@ -1,6 +1,7 @@
 package cz.martindavidik.accountingservice.services;
 
 import cz.martindavidik.accountingservice.domain.Expense;
+import cz.martindavidik.accountingservice.domain.ExpenseItem;
 
 import java.util.Date;
 import java.util.List;
@@ -21,6 +22,8 @@ public interface ExpenseService {
     double getTotalExpenseAmountByExpenseNumber(String expenseNumber);
 
     Expense save(Expense expense);
+
+    boolean saveExpenseWithExpenseItems(String expenseNumber, int supplierIdentificationNumber, Date paymentDate, List<ExpenseItem> expenseItems);
 
     void delete(Expense expense);
 }

@@ -18,6 +18,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class ExpenseImpl implements ExpenseService {
@@ -72,7 +73,7 @@ public class ExpenseImpl implements ExpenseService {
         if (expense.isPresent()) {
             Expense expense1 = expense.get();
             if (expense1.getPDFinvoicePath() != null) {
-                // invoice has been already saved
+                // invoice had been already saved
                 return null;
             }
 
@@ -175,7 +176,7 @@ public class ExpenseImpl implements ExpenseService {
     @Override
     @Transactional
     public double getTotalExpenseAmountByExpenseNumber(String expenseNumber) {
-        List<ExpenseItem> expenseItems = expenseItemService.findByExpenseNumber(expenseNumber);
+        Set<ExpenseItem> expenseItems = expenseItemService.findByExpenseNumber(expenseNumber);
 
         if (expenseItems != null) {
             var wrapper = new Object() {
@@ -206,18 +207,61 @@ public class ExpenseImpl implements ExpenseService {
     }
 
     /**
-     * Removes Expense with all it´s dependencies
+     * Saves Expense with ExpenseItems bound to Expense
+     *
+     * @param expenseNumber - Expense´s Primary key
+     * @param supplierIdentificationNumber - IČO
+     * @param paymentDate - on which date should payment be proceeded
+     * @param expenseItems - List of expenseItems
+     */
+    @Override
+    @Transactional
+    public boolean saveExpenseWithExpenseItems(
+            String expenseNumber,
+            int supplierIdentificationNumber,
+            Date paymentDate,
+            List<ExpenseItem> expenseItems
+    ) {
+        // save expense only with expense items
+        if (!expenseItems.isEmpty()) {
+            Expense expense = new Expense(expenseNumber, supplierIdentificationNumber, paymentDate);
+
+            // save Expense
+            expenseRepository.save(expense);
+
+            // save Expense items bound to Expense
+            expenseItems.forEach(expenseItem -> {
+                // fetch expenseItem entity from database (saved using ExpenseItemController)
+                Optional<ExpenseItem> expenseItem1 = expenseItemService.findById(expenseItem.getCode());
+
+                if (expenseItem1.isPresent()) {
+                    ExpenseItem expenseItem2 = expenseItem1.get();
+
+                    // bound Expense with ExpenseItem
+                    expenseItem2.addExpense(expense);
+                    expenseItemService.save(expenseItem2);
+                }
+            });
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Removes Expense with PDF invoice bound to it
      *
      * @param expense - Expense
      */
     @Override
     @Transactional
     public void delete(Expense expense) {
-        // remove all expenseItems (bound to Expense)
-        expenseItemService.deleteExpenseItemsByExpense(expense);
-
         // remove PDF invoice (bound to Expense)
         this.removeExpenseDocument(expense);
+
+        // remove link to expense items
+        expense.removeAllExpenseItems();
 
         // remove Expense
         expenseRepository.delete(expense);
