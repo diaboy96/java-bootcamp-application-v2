@@ -12,4 +12,6 @@ public interface ExpenseRepository extends CrudRepository<Expense, Integer> {
     Optional<Expense> findExpenseByExpenseNumber(String expenseNumber);
 
     List<Expense> findByDateBetween(Date from, Date to);
+
+    List<Expense> findExpenseByDateAndPaid(Date date, boolean paid);
 }

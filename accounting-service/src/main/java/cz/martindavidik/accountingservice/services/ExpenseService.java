@@ -11,6 +11,8 @@ public interface ExpenseService {
 
     Optional<Expense> findExpenseByExpenseNumber(String expenseNumber);
 
+    List<Expense> findExpensesByDateAndPaid(Date date, boolean paid);
+
     List<Expense> findByDateBetween(Date from, Date to);
 
     Expense attachExpenseDocument(String expenseNumber, String base64encodedPDFInvoice);

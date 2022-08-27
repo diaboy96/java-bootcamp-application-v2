@@ -43,6 +43,20 @@ public class ExpenseImpl implements ExpenseService {
     }
 
     /**
+     * Provides list of Expenses by given date
+     *
+     * @param date - date by which is searched
+     * @param paid - whether the expense was paid
+     *
+     * @return List<Expense>
+     */
+    @Override
+    @Transactional
+    public List<Expense> findExpensesByDateAndPaid(Date date, boolean paid) {
+        return expenseRepository.findExpenseByDateAndPaid(date, paid);
+    }
+
+    /**
      * Provides Expenses between specified dates
      *
      * @param from - from which date should be searched
