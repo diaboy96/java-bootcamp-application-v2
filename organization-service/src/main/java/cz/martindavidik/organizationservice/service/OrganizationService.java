@@ -1,4 +1,4 @@
-package cz.martindavidik.organizationservice.services;
+package cz.martindavidik.organizationservice.service;
 
 import cz.martindavidik.organizationservice.domain.Organization;
 

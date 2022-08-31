@@ -1,7 +1,7 @@
 package cz.martindavidik.organizationservice.bootstrap;
 
 import cz.martindavidik.organizationservice.domain.Organization;
-import cz.martindavidik.organizationservice.repositories.OrganizationRepository;
+import cz.martindavidik.organizationservice.repository.OrganizationRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 

@@ -1,8 +1,8 @@
-package cz.martindavidik.organizationservice.services.impl;
+package cz.martindavidik.organizationservice.service.impl;
 
 import cz.martindavidik.organizationservice.domain.Organization;
-import cz.martindavidik.organizationservice.repositories.OrganizationRepository;
-import cz.martindavidik.organizationservice.services.OrganizationService;
+import cz.martindavidik.organizationservice.repository.OrganizationRepository;
+import cz.martindavidik.organizationservice.service.OrganizationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,7 +1,7 @@
-package cz.martindavidik.organizationservice.controllers;
+package cz.martindavidik.organizationservice.controller;
 
 import cz.martindavidik.organizationservice.domain.Organization;
-import cz.martindavidik.organizationservice.services.OrganizationService;
+import cz.martindavidik.organizationservice.service.OrganizationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

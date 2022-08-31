@@ -1,7 +1,7 @@
-package cz.martindavidik.organizationservice.controllers;
+package cz.martindavidik.organizationservice.controller;
 
 import cz.martindavidik.organizationservice.domain.Organization;
-import cz.martindavidik.organizationservice.services.OrganizationService;
+import cz.martindavidik.organizationservice.service.OrganizationService;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;

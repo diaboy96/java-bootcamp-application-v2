@@ -1,4 +1,4 @@
-package cz.martindavidik.organizationservice.repositories;
+package cz.martindavidik.organizationservice.repository;
 
 import cz.martindavidik.organizationservice.domain.Organization;
 import org.springframework.data.jpa.repository.Query;
