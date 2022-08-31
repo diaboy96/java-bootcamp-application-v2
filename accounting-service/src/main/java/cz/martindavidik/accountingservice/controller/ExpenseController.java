@@ -1,11 +1,11 @@
-package cz.martindavidik.accountingservice.controllers;
+package cz.martindavidik.accountingservice.controller;
 
 import cz.martindavidik.accountingservice.domain.Expense;
 import cz.martindavidik.accountingservice.domain.ExpenseItem;
-import cz.martindavidik.accountingservice.services.DateService;
-import cz.martindavidik.accountingservice.services.ExpenseItemService;
-import cz.martindavidik.accountingservice.services.ExpenseService;
-import cz.martindavidik.accountingservice.services.OrganizationService;
+import cz.martindavidik.accountingservice.service.DateService;
+import cz.martindavidik.accountingservice.service.ExpenseItemService;
+import cz.martindavidik.accountingservice.service.ExpenseService;
+import cz.martindavidik.accountingservice.service.OrganizationService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;

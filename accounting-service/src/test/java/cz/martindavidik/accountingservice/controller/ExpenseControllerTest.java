@@ -1,14 +1,14 @@
-package cz.martindavidik.accountingservice.controllers;
+package cz.martindavidik.accountingservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import cz.martindavidik.accountingservice.domain.Expense;
 import cz.martindavidik.accountingservice.domain.ExpenseItem;
-import cz.martindavidik.accountingservice.services.DateService;
-import cz.martindavidik.accountingservice.services.ExpenseItemService;
-import cz.martindavidik.accountingservice.services.ExpenseService;
-import cz.martindavidik.accountingservice.services.OrganizationService;
+import cz.martindavidik.accountingservice.service.DateService;
+import cz.martindavidik.accountingservice.service.ExpenseItemService;
+import cz.martindavidik.accountingservice.service.ExpenseService;
+import cz.martindavidik.accountingservice.service.OrganizationService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;

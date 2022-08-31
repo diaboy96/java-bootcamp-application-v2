@@ -1,10 +1,10 @@
-package cz.martindavidik.accountingservice.services.impl;
+package cz.martindavidik.accountingservice.service.impl;
 
 import cz.martindavidik.accountingservice.domain.Expense;
 import cz.martindavidik.accountingservice.domain.ExpenseItem;
-import cz.martindavidik.accountingservice.repositories.ExpenseRepository;
-import cz.martindavidik.accountingservice.services.ExpenseItemService;
-import cz.martindavidik.accountingservice.services.ExpenseService;
+import cz.martindavidik.accountingservice.repository.ExpenseRepository;
+import cz.martindavidik.accountingservice.service.ExpenseItemService;
+import cz.martindavidik.accountingservice.service.ExpenseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

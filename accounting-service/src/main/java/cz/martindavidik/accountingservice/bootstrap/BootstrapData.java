@@ -2,8 +2,8 @@ package cz.martindavidik.accountingservice.bootstrap;
 
 import cz.martindavidik.accountingservice.domain.Expense;
 import cz.martindavidik.accountingservice.domain.ExpenseItem;
-import cz.martindavidik.accountingservice.services.ExpenseItemService;
-import cz.martindavidik.accountingservice.services.ExpenseService;
+import cz.martindavidik.accountingservice.service.ExpenseItemService;
+import cz.martindavidik.accountingservice.service.ExpenseService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 

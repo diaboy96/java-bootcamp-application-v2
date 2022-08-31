@@ -1,7 +1,7 @@
-package cz.martindavidik.accountingservice.services.impl;
+package cz.martindavidik.accountingservice.service.impl;
 
 import cz.martindavidik.accountingservice.dto.Organization;
-import cz.martindavidik.accountingservice.services.OrganizationService;
+import cz.martindavidik.accountingservice.service.OrganizationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;

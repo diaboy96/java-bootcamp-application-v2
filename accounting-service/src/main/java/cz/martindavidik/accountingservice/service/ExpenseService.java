@@ -1,4 +1,4 @@
-package cz.martindavidik.accountingservice.services;
+package cz.martindavidik.accountingservice.service;
 
 import cz.martindavidik.accountingservice.domain.Expense;
 import cz.martindavidik.accountingservice.domain.ExpenseItem;

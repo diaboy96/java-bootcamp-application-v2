@@ -1,4 +1,4 @@
-package cz.martindavidik.accountingservice.services;
+package cz.martindavidik.accountingservice.service;
 
 import cz.martindavidik.accountingservice.dto.Organization;
 import reactor.core.publisher.Flux;

@@ -1,7 +1,7 @@
-package cz.martindavidik.accountingservice.controllers;
+package cz.martindavidik.accountingservice.controller;
 
 import cz.martindavidik.accountingservice.domain.ExpenseItem;
-import cz.martindavidik.accountingservice.services.ExpenseItemService;
+import cz.martindavidik.accountingservice.service.ExpenseItemService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

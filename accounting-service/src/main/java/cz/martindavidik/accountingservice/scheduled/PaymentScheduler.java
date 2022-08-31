@@ -2,8 +2,8 @@ package cz.martindavidik.accountingservice.scheduled;
 
 import cz.martindavidik.accountingservice.domain.Expense;
 import cz.martindavidik.accountingservice.dto.Organization;
-import cz.martindavidik.accountingservice.services.ExpenseService;
-import cz.martindavidik.accountingservice.services.OrganizationService;
+import cz.martindavidik.accountingservice.service.ExpenseService;
+import cz.martindavidik.accountingservice.service.OrganizationService;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;

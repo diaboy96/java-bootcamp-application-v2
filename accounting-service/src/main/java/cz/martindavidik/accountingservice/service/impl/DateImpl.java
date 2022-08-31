@@ -1,6 +1,6 @@
-package cz.martindavidik.accountingservice.services.impl;
+package cz.martindavidik.accountingservice.service.impl;
 
-import cz.martindavidik.accountingservice.services.DateService;
+import cz.martindavidik.accountingservice.service.DateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;

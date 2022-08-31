@@ -1,4 +1,4 @@
-package cz.martindavidik.accountingservice.repositories;
+package cz.martindavidik.accountingservice.repository;
 
 import cz.martindavidik.accountingservice.domain.ExpenseItem;
 import org.springframework.data.repository.CrudRepository;

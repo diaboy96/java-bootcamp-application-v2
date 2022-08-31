@@ -1,7 +1,7 @@
-package cz.martindavidik.accountingservice.controllers;
+package cz.martindavidik.accountingservice.controller;
 
 import cz.martindavidik.accountingservice.domain.ExpenseItem;
-import cz.martindavidik.accountingservice.services.ExpenseItemService;
+import cz.martindavidik.accountingservice.service.ExpenseItemService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
