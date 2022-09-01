@@ -21,18 +21,37 @@ public class ExpenseItemImpl implements ExpenseItemService {
     @Autowired
     ExpenseRepository expenseRepository;
 
+    /**
+     * Return ExpenseItem by provided code
+     *
+     * @param code - ExpenseItem´s primary key
+     *
+     * @return Optional<ExpenseItem>
+     */
     @Override
     @Transactional
     public Optional<ExpenseItem> findById(int code) {
         return expenseItemRepository.findById(code);
     }
 
+    /**
+     * Returns all ExpenseItem
+     *
+     * @return Iterable<ExpenseItem>
+     */
     @Override
     @Transactional
     public Iterable<ExpenseItem> findAll() {
         return expenseItemRepository.findAll();
     }
 
+    /**
+     * Returns set of ExpenseItem bound to particular Expense
+     *
+     * @param expenseNumber - Expense´s primary key
+     *
+     * @return Set<ExpenseItem>
+     */
     @Override
     @Transactional
     public Set<ExpenseItem> findByExpenseNumber(String expenseNumber) {
@@ -41,12 +60,24 @@ public class ExpenseItemImpl implements ExpenseItemService {
         return expense.map(Expense::getExpenseItems).orElse(null);
     }
 
+    /**
+     * Saves ExpenseItem to database
+     *
+     * @param expenseItem - ExpenseItem
+     *
+     * @return ExpenseItem
+     */
     @Override
     @Transactional
     public ExpenseItem save(ExpenseItem expenseItem) {
         return expenseItemRepository.save(expenseItem);
     }
 
+    /**
+     * Removes ExpenseItem from database
+     *
+     * @param expenseItem - ExpenseItem
+     */
     @Override
     @Transactional
     public void delete(ExpenseItem expenseItem) {

@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -205,7 +206,9 @@ public class ExpenseControllerTest {
 
         // data mock
         Mockito.when(expenseService.attachExpenseDocument(expenseNumber, base64encodedFile))
-                .thenReturn(new Expense(expenseNumber, existingOrganization, businessDay, pdfInvoicePath, false));
+                .thenReturn(
+                        Optional.of(new Expense(expenseNumber, existingOrganization, businessDay, pdfInvoicePath, false))
+                );
 
         // perform correct request
         this.mockMvc

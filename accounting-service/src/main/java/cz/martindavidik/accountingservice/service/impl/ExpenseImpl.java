@@ -77,18 +77,18 @@ public class ExpenseImpl implements ExpenseService {
      * @param expenseNumber - Expense´s Primary key
      * @param base64encodedPDFInvoice - PDF Invoice (base64 encoded)
      *
-     * @return Expense
+     * @return Optional<Expense>
      */
     @Override
     @Transactional
-    public Expense attachExpenseDocument(String expenseNumber, String base64encodedPDFInvoice) {
+    public Optional<Expense> attachExpenseDocument(String expenseNumber, String base64encodedPDFInvoice) {
         Optional<Expense> expense = this.findExpenseByExpenseNumber(expenseNumber);
 
         if (expense.isPresent()) {
             Expense expense1 = expense.get();
             if (expense1.getPDFinvoicePath() != null) {
                 // invoice had been already saved
-                return null;
+                return Optional.empty();
             }
 
             // check if directory exist (otherwise create it)
@@ -108,13 +108,13 @@ public class ExpenseImpl implements ExpenseService {
                 // set PDF invoice path to Expense
                 expense1.setPDFinvoicePath(path);
 
-                return this.save(expense1);
+                return Optional.ofNullable(this.save(expense1));
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        return null;
+        return Optional.empty();
     }
 
     /**
@@ -122,11 +122,11 @@ public class ExpenseImpl implements ExpenseService {
      *
      * @param expense - Expense
      *
-     * @return Expense
+     * @return Optional<Expense>
      */
     @Override
     @Transactional
-    public Expense removeExpenseDocument(Expense expense) {
+    public Optional<Expense> removeExpenseDocument(Expense expense) {
         String filePath = expense.getPDFinvoicePath();
 
         if (filePath != null) {
@@ -136,14 +136,14 @@ public class ExpenseImpl implements ExpenseService {
                 if (Files.deleteIfExists(file.toPath())) {
                     expense.setPDFinvoicePath(null);
 
-                    return this.save(expense);
+                    return Optional.ofNullable(this.save(expense));
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
-        return null;
+        return Optional.empty();
     }
 
     /**
@@ -228,11 +228,11 @@ public class ExpenseImpl implements ExpenseService {
      * @param paymentDate - on which date should payment be proceeded
      * @param expenseItems - List of expenseItems
      *
-     * @return Expense
+     * @return Optional<Expense>
      */
     @Override
     @Transactional
-    public Expense saveExpenseWithExpenseItems(
+    public Optional<Expense> saveExpenseWithExpenseItems(
             String expenseNumber,
             int supplierIdentificationNumber,
             Date paymentDate,
@@ -260,10 +260,10 @@ public class ExpenseImpl implements ExpenseService {
             });
 
             // return saved Expense
-            return expense;
+            return Optional.of(expense);
         }
 
-        return null;
+        return Optional.empty();
     }
 
     /**

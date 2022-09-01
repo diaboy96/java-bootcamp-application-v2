@@ -18,6 +18,14 @@ public class DateImpl implements DateService {
     private final WebClient client;
     private static String COUNTRY_CODE = "cz";
 
+    /**
+     * Constructor
+     * creates instance of WebClient and setup country code (for searching national holiday in API)
+     *
+     * @param environment - Environment
+     *
+     * @throws Exception - when endpoint value is not defined in application.properties
+     */
     @Autowired
     public DateImpl(Environment environment) throws Exception {
         String endpoint = environment.getProperty("api.dateNager.endpoint");
@@ -33,6 +41,13 @@ public class DateImpl implements DateService {
         this.client = WebClient.create(endpoint);
     }
 
+    /**
+     * Return true when day is business day (it is not weekend or national holiday)
+     *
+     * @param date - date to be checked
+     *
+     * @return boolean
+     */
     @Override
     public boolean dateIsABusinessDay(Date date) {
         Calendar calendar = Calendar.getInstance();

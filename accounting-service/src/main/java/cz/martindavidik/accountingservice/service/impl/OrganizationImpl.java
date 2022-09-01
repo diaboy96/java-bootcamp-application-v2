@@ -13,6 +13,14 @@ public class OrganizationImpl implements OrganizationService {
 
     private final WebClient client;
 
+    /**
+     * Constructor
+     * creates instance of WebClient
+     *
+     * @param environment - Environment
+     *
+     * @throws Exception - when endpoint value is not defined in application.properties
+     */
     @Autowired
     public OrganizationImpl(Environment environment) throws Exception {
         String endpoint = environment.getProperty("api.organizationService.endpoint");
@@ -23,11 +31,25 @@ public class OrganizationImpl implements OrganizationService {
         this.client = WebClient.create(endpoint);
     }
 
+    /**
+     * Obtain Organization from API
+     *
+     * @param identificationNumber - Organization´s identification number (IČO)
+     *
+     * @return Flux<Organization>
+     */
     @Override
     public Flux<Organization> getOrganizationByIdentificationNumber(int identificationNumber) {
         return client.get().uri("/getOrganization/" + identificationNumber).retrieve().bodyToFlux(Organization.class);
     }
 
+    /**
+     * Return true when organization with provided identificationNumber exist (in organization-service database)
+     *
+     * @param identificationNumber - Organization´s identification number (IČO)
+     *
+     * @return boolean
+     */
     @Override
     public boolean organizationExist(int identificationNumber) {
         Flux<Organization> organizationFlux = this.getOrganizationByIdentificationNumber(identificationNumber);

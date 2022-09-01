@@ -53,10 +53,10 @@ public class ExpenseController {
      * @param paymentDate - on which date should payment be proceeded
      * @param expenseItems - JSON
      *
-     * @return Expense
+     * @return Optional<Expense>
      */
     @PutMapping("/createExpense")
-    public Expense createExpense(
+    public Optional<Expense> createExpense(
             @RequestParam int supplierIdentificationNumber,
             @RequestParam String expenseNumber,
             @RequestParam @DateTimeFormat(pattern = "dd/MM/yyyy") Date paymentDate,
@@ -117,7 +117,7 @@ public class ExpenseController {
      * @return Expense
      */
     @PutMapping("/uploadExpenseDocument")
-    public Expense uploadExpenseDocument(@RequestParam String expenseNumber, @RequestBody String expenseDocument) {
+    public Optional<Expense> uploadExpenseDocument(@RequestParam String expenseNumber, @RequestBody String expenseDocument) {
         return expenseService.attachExpenseDocument(expenseNumber, expenseDocument);
     }
 
@@ -141,7 +141,7 @@ public class ExpenseController {
      * @return Expense
      */
     @DeleteMapping("/removeExpenseDocument/{expenseNumber}")
-    public Expense removeExpenseDocument(@PathVariable String expenseNumber) {
+    public Optional<Expense> removeExpenseDocument(@PathVariable String expenseNumber) {
         Optional<Expense> expense = expenseService.findExpenseByExpenseNumber(expenseNumber);
 
         return expense.map(expenseService::removeExpenseDocument).orElse(null);
