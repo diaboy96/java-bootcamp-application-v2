@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface OrganizationService {
 
-    List<Organization> getAllOrganizations();
+    Iterable<Organization> getAllOrganizations();
 
     List<Organization> findByName(String name);
 

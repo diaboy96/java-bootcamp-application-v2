@@ -17,14 +17,14 @@ public class OrganizationImpl implements OrganizationService {
 
     @Override
     @Transactional
-    public List<Organization> getAllOrganizations() {
-        return organizationRepository.getAllOrganizations();
+    public Iterable<Organization> getAllOrganizations() {
+        return organizationRepository.findAll();
     }
 
     @Override
     @Transactional
     public List<Organization> findByName(String name) {
-        return organizationRepository.findByName(name);
+        return organizationRepository.findOrganizationsByNameContainingIgnoreCase(name);
     }
 
     @Override

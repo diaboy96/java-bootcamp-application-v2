@@ -30,7 +30,7 @@ public class OrganizationController {
      * @return List<Organization>
      */
     @GetMapping("/getAllOrganizations")
-    public List<Organization> getAllOrganizations() {
+    public Iterable<Organization> getAllOrganizations() {
         return organizationService.getAllOrganizations();
     }
 
