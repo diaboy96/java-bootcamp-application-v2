@@ -56,7 +56,7 @@ public class ExpenseController {
      * @return Expense
      */
     @PutMapping("/createExpense")
-    public boolean createExpense(
+    public Expense createExpense(
             @RequestParam int supplierIdentificationNumber,
             @RequestParam String expenseNumber,
             @RequestParam @DateTimeFormat(pattern = "dd/MM/yyyy") Date paymentDate,

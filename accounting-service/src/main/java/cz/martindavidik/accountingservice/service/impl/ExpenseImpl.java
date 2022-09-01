@@ -227,10 +227,12 @@ public class ExpenseImpl implements ExpenseService {
      * @param supplierIdentificationNumber - IČO
      * @param paymentDate - on which date should payment be proceeded
      * @param expenseItems - List of expenseItems
+     *
+     * @return Expense
      */
     @Override
     @Transactional
-    public boolean saveExpenseWithExpenseItems(
+    public Expense saveExpenseWithExpenseItems(
             String expenseNumber,
             int supplierIdentificationNumber,
             Date paymentDate,
@@ -245,7 +247,7 @@ public class ExpenseImpl implements ExpenseService {
 
             // save Expense items bound to Expense
             expenseItems.forEach(expenseItem -> {
-                // fetch expenseItem entity from database (saved using ExpenseItemController)
+                // fetch expenseItem entity from database (previously saved using ExpenseItemController)
                 Optional<ExpenseItem> expenseItem1 = expenseItemService.findById(expenseItem.getCode());
 
                 if (expenseItem1.isPresent()) {
@@ -257,10 +259,11 @@ public class ExpenseImpl implements ExpenseService {
                 }
             });
 
-            return true;
+            // return saved Expense
+            return expense;
         }
 
-        return false;
+        return null;
     }
 
     /**
