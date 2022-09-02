@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -59,7 +59,7 @@ public class ExpenseController {
     public Optional<Expense> createExpense(
             @RequestParam int supplierIdentificationNumber,
             @RequestParam String expenseNumber,
-            @RequestParam @DateTimeFormat(pattern = "dd/MM/yyyy") Date paymentDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate paymentDate,
             @RequestBody List<ExpenseItem> expenseItems
     ) {
         // check if organization exist
@@ -102,19 +102,20 @@ public class ExpenseController {
      */
     @GetMapping("/listExpenses")
     public List<Expense> listExpenses(
-            @RequestParam @DateTimeFormat(pattern = "dd/MM/yyyy") Date from,
-            @RequestParam @DateTimeFormat(pattern = "dd/MM/yyyy") Date to
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to
     ) {
         return expenseService.findByDateBetween(from, to);
     }
 
     /**
      * Attach PDF invoice to Expense
+     * invoice will be saved only if the Expense has no saved invoice (otherwise method return null - the previously saved invoice will NOT be overwritten)
      *
      * @param expenseNumber - Expense´s Primary key
      * @param expenseDocument - base 64 encoded PDF invoice
      *
-     * @return Expense
+     * @return Optional<Expense>
      */
     @PutMapping("/uploadExpenseDocument")
     public Optional<Expense> uploadExpenseDocument(@RequestParam String expenseNumber, @RequestBody String expenseDocument) {

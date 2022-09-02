@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Base64;
 import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -52,7 +52,7 @@ public class ExpenseImpl implements ExpenseService {
      */
     @Override
     @Transactional
-    public List<Expense> findExpensesByDateAndPaid(Date date, boolean paid) {
+    public List<Expense> findExpensesByDateAndPaid(LocalDate date, boolean paid) {
         return expenseRepository.findExpenseByDateAndPaid(date, paid);
     }
 
@@ -66,7 +66,7 @@ public class ExpenseImpl implements ExpenseService {
      */
     @Override
     @Transactional
-    public List<Expense> findByDateBetween(Date from, Date to) {
+    public List<Expense> findByDateBetween(LocalDate from, LocalDate to) {
         return expenseRepository.findByDateBetween(from, to);
     }
 
@@ -235,7 +235,7 @@ public class ExpenseImpl implements ExpenseService {
     public Optional<Expense> saveExpenseWithExpenseItems(
             String expenseNumber,
             int supplierIdentificationNumber,
-            Date paymentDate,
+            LocalDate paymentDate,
             List<ExpenseItem> expenseItems
     ) {
         // save expense only with expense items

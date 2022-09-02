@@ -20,10 +20,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.nio.charset.StandardCharsets;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.Month;
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -51,15 +50,11 @@ public class ExpenseControllerTest {
     public static final MediaType APPLICATION_JSON_UTF8 = new MediaType(MediaType.APPLICATION_JSON.getType(), MediaType.APPLICATION_JSON.getSubtype(), StandardCharsets.UTF_8);
 
     private final int existingOrganization = 6636292; // organization´s identification number
-    private final String businessDayString = "12/7/2022";
-    private final Date businessDay = new SimpleDateFormat("dd/MM/yyyy").parse(businessDayString);
+    private final LocalDate businessDay = LocalDate.of(2022, Month.JULY, 12);
     private final String expenseNumber = "CZ20220001";
-    private final String responseDate = "2022-07-11T22:00:00.000+00:00";
+    private final String responseDate = "2022-07-12";
     private final ExpenseItem expenseItem1 = new ExpenseItem(224, "Popis položky č.1", 7, 14.90);
     private final ExpenseItem expenseItem2 = new ExpenseItem(1027, "Popis položky č.2", 42, 769);
-
-    public ExpenseControllerTest() throws ParseException {
-    }
 
     @Test
     public void testCreateMockMvc() {
@@ -68,6 +63,9 @@ public class ExpenseControllerTest {
 
     @Test
     public void testCreateExpense() throws Exception {
+        String businessDayString = "2022-07-12";
+        String weekendDayString = "2022-08-13";
+        String publicHolidayString = "2022-07-06";
         // create expenseItems list
         List<ExpenseItem> expenseItems = new ArrayList<>();
         expenseItems.add(expenseItem1);
@@ -81,10 +79,8 @@ public class ExpenseControllerTest {
 
         // data mock
         int nonexistentOrganization = 12345678; // organization identification number
-        String weekendDayString = "13/8/2022";
-        Date weekendDay = new SimpleDateFormat("dd/MM/yyyy").parse(weekendDayString);
-        String publicHolidayString = "6/7/2022";
-        Date publicHoliday = new SimpleDateFormat("dd/MM/yyyy").parse(publicHolidayString);
+        LocalDate weekendDay = LocalDate.of(2022, Month.AUGUST, 13);
+        LocalDate publicHoliday = LocalDate.of(2022, Month.JULY, 6);
 
         Mockito.when(organizationService.organizationExist(existingOrganization)).thenReturn(true);
         Mockito.when(organizationService.organizationExist(nonexistentOrganization)).thenReturn(false);
@@ -146,33 +142,26 @@ public class ExpenseControllerTest {
         // data mock
         Mockito.when(expenseItemService.findByExpenseNumber(expenseNumber))
                 .thenReturn(
-                        Set.of(
-                                expenseItem1,
-                                expenseItem2
-                        )
+                        Set.of(expenseItem1)
                 );
 
         // perform request
         this.mockMvc
                 .perform(MockMvcRequestBuilders.get("/api/getExpenseItemsByExpenseNumber/" + expenseNumber))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(2))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].code").value(224))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].description").value("Popis položky č.1"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].numberOfPieces").value(7))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].pricePerPiece").value(14.90))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].code").value(1027))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].description").value("Popis položky č.2"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].numberOfPieces").value(42))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].pricePerPiece").value(769));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].pricePerPiece").value(14.90));
     }
 
     @Test
     public void testListExpenses() throws Exception {
-        String fromDateString = "10/7/2022";
-        Date fromDate = new SimpleDateFormat("dd/MM/yyyy").parse(fromDateString);
-        String toDateString = "15/7/2022";
-        Date toDate = new SimpleDateFormat("dd/MM/yyyy").parse(toDateString);
+        String fromDateString = "2022-07-10";
+        LocalDate fromDate = LocalDate.of(2022, Month.JULY, 10);
+        String toDateString = "2022-07-15";
+        LocalDate toDate = LocalDate.of(2022, Month.JULY, 15);
 
         // data mock
         Mockito.when(expenseService.findByDateBetween(fromDate, toDate))

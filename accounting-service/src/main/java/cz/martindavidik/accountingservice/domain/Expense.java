@@ -6,7 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,7 +20,7 @@ public class Expense {
     @Column(length = 8)
     private int supplier;
 
-    private Date date;
+    private LocalDate date;
 
     @ManyToMany(mappedBy = "expenses", targetEntity = ExpenseItem.class)
     @JsonIgnoreProperties("expenses")
@@ -33,13 +33,13 @@ public class Expense {
     public Expense() {
     }
 
-    public Expense(String expenseNumber, int supplier, Date date) {
+    public Expense(String expenseNumber, int supplier, LocalDate date) {
         this.expenseNumber = expenseNumber;
         this.supplier = supplier;
         this.date = date;
     }
 
-    public Expense(String expenseNumber, int supplier, Date date, String PDFinvoicePath, boolean paid) {
+    public Expense(String expenseNumber, int supplier, LocalDate date, String PDFinvoicePath, boolean paid) {
         this.expenseNumber = expenseNumber;
         this.supplier = supplier;
         this.date = date;
@@ -63,11 +63,11 @@ public class Expense {
         this.supplier = supplier;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

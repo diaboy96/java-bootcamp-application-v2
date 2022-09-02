@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 @Service
@@ -49,21 +49,22 @@ public class DateImpl implements DateService {
      * @return boolean
      */
     @Override
-    public boolean dateIsABusinessDay(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-
-        if ((calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) || (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)) {
+    public boolean dateIsABusinessDay(LocalDate date) {
+        // check whether date is weekend day
+        if (date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.SUNDAY) {
             return false;
         }
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        // date to be checked in particular format
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String searchedDate = dateFormat.format(date);
 
+        // get public holiday days from API
         Flux<cz.martindavidik.accountingservice.dto.Date> dateFlux = client.get()
-                .uri("/PublicHolidays/" + calendar.get(Calendar.YEAR) + "/" + COUNTRY_CODE)
+                .uri("/PublicHolidays/" + date.getYear() + "/" + COUNTRY_CODE)
                 .retrieve().bodyToFlux(cz.martindavidik.accountingservice.dto.Date.class);
 
+        // check whether date to be checked was found in API response --> date is public holiday
         boolean dateIsNationalHoliday = dateFlux.toStream().filter(date1 -> Objects.equals(date1.getDate(), searchedDate)).count() > 0;
 
         return !dateIsNationalHoliday;

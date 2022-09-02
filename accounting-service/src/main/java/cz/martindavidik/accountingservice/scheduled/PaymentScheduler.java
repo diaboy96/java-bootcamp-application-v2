@@ -10,9 +10,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 
@@ -30,17 +30,22 @@ public class PaymentScheduler {
 
     @Scheduled(cron = "${cron.expression.payexpense}")
     @Transactional
-    public void payExpense() throws ParseException {
-        String dateWithoutTime = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
-        Date todayDate = new SimpleDateFormat("dd/MM/yyyy").parse(dateWithoutTime);
+    public void payExpense() {
+        LocalDate todayDate = LocalDate.now();
         List<Expense> expenses = expenseService.findExpensesByDateAndPaid(todayDate, false);
 
         if (!expenses.isEmpty()) {
             expenses.forEach(expense -> {
-                String when = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date());
+                // get actual dateTime
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+                String when = LocalDateTime.now().format(formatter);
+                // get expenseNumber
                 String who = expense.getExpenseNumber();
+                // get total amount to be paid
                 double amount = expenseService.getTotalExpenseAmountByExpenseNumber(who);
+                // get supplier identification number
                 int whom = expense.getSupplier();
+                // get supplier name (by identification number)
                 Flux<Organization> organizationFlux = organizationService.getOrganizationByIdentificationNumber(whom);
                 String organizationName = Objects.requireNonNull(organizationFlux.blockFirst()).getName();
 

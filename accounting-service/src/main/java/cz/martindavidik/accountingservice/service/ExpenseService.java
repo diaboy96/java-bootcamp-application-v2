@@ -3,7 +3,7 @@ package cz.martindavidik.accountingservice.service;
 import cz.martindavidik.accountingservice.domain.Expense;
 import cz.martindavidik.accountingservice.domain.ExpenseItem;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,9 +11,9 @@ public interface ExpenseService {
 
     Optional<Expense> findExpenseByExpenseNumber(String expenseNumber);
 
-    List<Expense> findExpensesByDateAndPaid(Date date, boolean paid);
+    List<Expense> findExpensesByDateAndPaid(LocalDate date, boolean paid);
 
-    List<Expense> findByDateBetween(Date from, Date to);
+    List<Expense> findByDateBetween(LocalDate from, LocalDate to);
 
     Optional<Expense> attachExpenseDocument(String expenseNumber, String base64encodedPDFInvoice);
 
@@ -25,7 +25,7 @@ public interface ExpenseService {
 
     Expense save(Expense expense);
 
-    Optional<Expense> saveExpenseWithExpenseItems(String expenseNumber, int supplierIdentificationNumber, Date paymentDate, List<ExpenseItem> expenseItems);
+    Optional<Expense> saveExpenseWithExpenseItems(String expenseNumber, int supplierIdentificationNumber, LocalDate paymentDate, List<ExpenseItem> expenseItems);
 
     void delete(Expense expense);
 }

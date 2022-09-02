@@ -1,8 +1,8 @@
 package cz.martindavidik.accountingservice.service;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public interface DateService {
 
-    boolean dateIsABusinessDay(Date date);
+    boolean dateIsABusinessDay(LocalDate date);
 }

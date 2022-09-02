@@ -7,9 +7,9 @@ import cz.martindavidik.accountingservice.service.ExpenseService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.text.SimpleDateFormat;
+import java.time.Month;
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Component
@@ -38,8 +38,8 @@ public class BootstrapData implements CommandLineRunner {
         expenseItemService.save(expenseItem4);
 
         // create Expenses
-        Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse("02/08/2022");
-        Date date2 = new SimpleDateFormat("dd/MM/yyyy").parse("26/08/2022");
+        LocalDate date1 = LocalDate.of(2022, Month.AUGUST, 2);
+        LocalDate date2 = LocalDate.of(2022, Month.SEPTEMBER, 16);
         Expense expense1 = new Expense("CZ20220001", 25687221, date1);
         Expense expense2 = new Expense("CZ20220002", 25687221, date2);
 
@@ -53,8 +53,8 @@ public class BootstrapData implements CommandLineRunner {
         expenseItems.add(expenseItem2);
         expenseItems.add(expenseItem3);
 
-        expenseService.saveExpenseWithExpenseItems("CZ20220002", 25687221,
-                new SimpleDateFormat("dd/MM/yyyy").parse("16/09/2022"), expenseItems
+        expenseService.saveExpenseWithExpenseItems("CZ20220003", 25687221,
+                LocalDate.of(2022, Month.SEPTEMBER, 2), expenseItems
         );
 
         // attach base64 encoded invoice to Expense1
