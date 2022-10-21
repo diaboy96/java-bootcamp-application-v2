@@ -4,7 +4,7 @@
 FROM maven:3.8.6 AS BUILD
 COPY src /home/app/src
 COPY pom.xml /home/app
-RUN mvn -f /home/app/pom.xml clean package -DskipTests
+RUN mvn -f /home/app/pom.xml clean package
 # Todo: after integration of TestContainers --> remove -DskipTests
 
 #

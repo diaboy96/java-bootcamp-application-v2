@@ -1,11 +1,13 @@
 package cz.martindavidik.organizationservice.controller;
 
+import cz.martindavidik.organizationservice.config.ContainersEnvironment;
 import cz.martindavidik.organizationservice.domain.Organization;
 import cz.martindavidik.organizationservice.service.OrganizationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -15,8 +17,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
+@ActiveProfiles("test")
 @WebMvcTest(OrganizationController.class)
-public class OrganizationControllerTest {
+public class OrganizationControllerTest extends ContainersEnvironment {
 
     @Autowired
     private MockMvc mockMvc;
